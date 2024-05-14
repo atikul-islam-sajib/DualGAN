@@ -6,6 +6,7 @@ import torch.nn as nn
 
 sys.path.append("src/")
 
+from utils import device_init
 from discriminator import Discriminator
 
 
@@ -17,8 +18,10 @@ class GradientPenalty(nn.Module):
         self.batch_size = batch_size
         self.device = device
 
-        self.alpha = torch.randn(self.batch_size, self.in_channels, 1, 1).to(
-            self.device
+        self.device = device_init(device=self.device)
+
+        self.alpha = torch.randn(
+            self.batch_size, self.in_channels // self.in_channels, 1, 1
         )
 
     def forward(self, netD, X, y):
@@ -29,18 +32,22 @@ class GradientPenalty(nn.Module):
         ):
             interpolated = (self.alpha * X) + ((1 - self.alpha) * y)
             interpolated = interpolated.requires_grad_(True)
-            d_interpolated = netD(interpolated)
+
+            netD = netD.to(self.device)
+
+            d_interpolated = netD(interpolated.to(self.device))
 
             gradients = torch.autograd.grad(
                 outputs=d_interpolated,
                 inputs=interpolated,
-                grad_outputs=torch.ones(d_interpolated.size()).to(self.device),
+                grad_outputs=torch.ones_like(d_interpolated).to(self.device),
                 create_graph=True,
                 retain_graph=True,
-                only_inputs=True,
-            )
+            )[0]
+
             gradients = gradients.view(gradients.size(0), -1)
             gradients = torch.norm(gradients, 2, dim=1)
+
             return ((gradients - 1) ** 2).mean()
 
         else:
