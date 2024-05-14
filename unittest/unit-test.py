@@ -83,6 +83,16 @@ class UnitTest(unittest.TestCase):
         )
         self.assertGreater(result, 0.001)
 
+    def test_total_quantity(self):
+        train_dataloader = self.init["train_dataloader"]
+        test_dataloader = self.init["test_dataloader"]
+
+        total_quantity = sum(X.size(0) for X, _ in train_dataloader) + sum(
+            X.size(1) for X, _ in test_dataloader
+        )
+
+        self.assertEqual(total_quantity, 21)
+
 
 if __name__ == "__main__":
     unittest.main()
