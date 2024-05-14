@@ -90,7 +90,6 @@ def helpers(**kwargs):
         "netG_YtoX": netG_YtoX,
         "netD_X": netD_X,
         "netD_Y": netD_Y,
-        "dataloader": dataloader,
         "cycle_loss": cycle_loss,
         "grad_penalty": grad_penalty,
         "train_dataloader": dataloader["train_dataloader"],
@@ -109,10 +108,18 @@ if __name__ == "__main__":
         device=device,
     )
 
-    gp = init["grad_penalty"]
-    netD = Discriminator(in_channels=3).to(device)
+    print(init["netG_XtoY"])
+    print(init["netG_YtoX"])
 
-    X = torch.randn(1, 3, 256, 256).to(device)
-    y = torch.randn(1, 3, 256, 256).to(device)
+    print(init["netD_X"])
+    print(init["netD_Y"])
 
-    print(gp(netD, X, y, device=device))
+    print(init["optimizerG"])
+    print(init["optimizerD_X"])
+    print(init["optimizerD_Y"])
+
+    print(init["train_dataloader"])
+    print(init["test_dataloader"])
+
+    print(init["cycle_loss"])
+    print(init["grad_penalty"])
