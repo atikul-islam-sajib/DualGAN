@@ -18,29 +18,25 @@ class GradientPenalty(nn.Module):
         self.batch_size = batch_size
         self.device = device
 
-        self.device = device_init(device=self.device)
-
-        self.alpha = torch.randn(
-            self.batch_size, self.in_channels // self.in_channels, 1, 1
-        )
-
-    def forward(self, netD, X, y):
+    def forward(self, netD, X, y, device=None):
         if (
             isinstance(netD, Discriminator)
             and isinstance(X, torch.Tensor)
             and isinstance(y, torch.Tensor)
         ):
-            interpolated = (self.alpha * X) + ((1 - self.alpha) * y)
+            alpha = torch.randn(
+                self.batch_size, self.in_channels // self.in_channels, 1, 1
+            ).to(device)
+
+            interpolated = (alpha * X) + ((1 - alpha) * y)
             interpolated = interpolated.requires_grad_(True)
 
-            netD = netD.to(self.device)
-
-            d_interpolated = netD(interpolated.to(self.device))
+            d_interpolated = netD(interpolated)
 
             gradients = torch.autograd.grad(
                 outputs=d_interpolated,
                 inputs=interpolated,
-                grad_outputs=torch.ones_like(d_interpolated).to(self.device),
+                grad_outputs=torch.ones_like(d_interpolated).to(device),
                 create_graph=True,
                 retain_graph=True,
             )[0]
