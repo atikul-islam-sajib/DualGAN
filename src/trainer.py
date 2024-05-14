@@ -3,7 +3,7 @@ import os
 import torch
 import numpy as np
 from tqdm import tqdm
-
+from torchvision.utils import save_image
 from torch.optim.lr_scheduler import StepLR
 
 sys.path.append("src/")
@@ -215,6 +215,23 @@ class Trainer:
         else:
             raise Exception("Cannot be saved the model")
 
+    def saved_training_results(self, **kwargs):
+        X, y = next(iter(self.test_dataloader))
+
+        predict_y = self.netGX_toY(X.to(self.device))
+        reconstructed_X = self.netGY_toX(predict_y.to(self.device))
+
+        for filename, samples in [
+            ("predict_y", predict_y),
+            ("reconstructed_X", reconstructed_X),
+        ]:
+            save_image(
+                samples,
+                os.path.join(
+                    self.train_results, "{}{}.png".format(filename, kwargs["epoch"])
+                ),
+            )
+
     def train(self):
         for epoch in tqdm(range(self.epochs)):
             netG_loss = []
@@ -239,6 +256,7 @@ class Trainer:
             )
 
             self.saved_checkpoints(epoch=epoch + 1, netG_loss=np.mean(netG_loss))
+            self.saved_training_results(epoch=epoch + 1)
 
 
 if __name__ == "__main__":
