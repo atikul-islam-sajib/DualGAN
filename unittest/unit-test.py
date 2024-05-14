@@ -8,6 +8,7 @@ sys.path.append("src/")
 from dataloader import Loader
 from utils import load, config
 from discriminator import Discriminator
+from generator import Generator
 
 
 class UnitTest(unittest.TestCase):
@@ -24,6 +25,7 @@ class UnitTest(unittest.TestCase):
         )
 
         self.netD = Discriminator(in_channels=3)
+        self.netG = Generator(in_channels=3)
 
     def test_total_train_data(self):
         self.assertEqual(sum(X.size(0) for X, _ in self.train_dataloader), 18)
@@ -45,6 +47,11 @@ class UnitTest(unittest.TestCase):
 
     def test_netD_shape(self):
         self.assertEqual(self.netD(torch.randn(1, 3, 256, 256)).size(), (1, 1, 30, 30))
+
+    def test_netG_shape(self):
+        self.assertEqual(
+            self.netG(torch.randn(1, 3, 256, 256)).size(), (1, 3, 256, 256)
+        )
 
 
 if __name__ == "__main__":
