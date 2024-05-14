@@ -1,11 +1,13 @@
 import sys
 import os
+import torch
 import unittest
 
 sys.path.append("src/")
 
 from dataloader import Loader
 from utils import load, config
+from discriminator import Discriminator
 
 
 class UnitTest(unittest.TestCase):
@@ -20,6 +22,8 @@ class UnitTest(unittest.TestCase):
                 config()["path"]["processed_path"], "test_dataloader.pkl"
             )
         )
+
+        self.netD = Discriminator(in_channels=3)
 
     def test_total_train_data(self):
         self.assertEqual(sum(X.size(0) for X, _ in self.train_dataloader), 18)
@@ -38,6 +42,9 @@ class UnitTest(unittest.TestCase):
             X.size(0) for X, _ in self.test_dataloader
         )
         self.assertEqual(total_data, 25)
+
+    def test_netD_shape(self):
+        self.assertEqual(self.netD(torch.randn(1, 3, 256, 256)).size(), (1, 1, 30, 30))
 
 
 if __name__ == "__main__":
