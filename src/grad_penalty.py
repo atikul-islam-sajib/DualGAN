@@ -66,15 +66,17 @@ if __name__ == "__main__":
 
     in_channels = args.in_channels
     batch_size = args.batch_size
-    device = args.device
+    device = device_init(device=args.device)
 
     netD = Discriminator(in_channels=in_channels)
 
-    X = torch.randn(1, 3, 256, 256)
-    y = torch.randn(1, 3, 256, 256)
+    netD = netD.to(device)
+
+    X = torch.randn(1, 3, 256, 256).to(device)
+    y = torch.randn(1, 3, 256, 256).to(device)
 
     grad_penalty = GradientPenalty(
         in_channels=in_channels, batch_size=batch_size, device=device
     )
 
-    print(grad_penalty(netD, X, y))
+    print(grad_penalty(netD, X, y, device=device))
