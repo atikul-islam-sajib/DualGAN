@@ -169,7 +169,7 @@ class Trainer:
         if self.is_display:
             print(
                 "Epochs - [{}/{}] - netG_loss: {} - netD_X_loss: {} - netD_Y_loss: {}".format(
-                    kwargs["epoch"] + 1,
+                    kwargs["epoch"],
                     self.epochs,
                     np.mean(kwargs["netG_loss"]),
                     np.mean(kwargs["netD_X_loss"]),
@@ -190,18 +190,14 @@ class Trainer:
             and os.path.exists(self.netG_YtoX_path)
             and os.path.exists(self.best_model_path)
         ):
-            torch.save(
-                self.netGX_toY.state_dict(),
-                os.path.join(
-                    self.netG_XtoY_path, "netG_XtoY{}.pth".format(kwargs["epoch"])
-                ),
-            )
-            torch.save(
-                self.netGY_toX.state_dict(),
-                os.path.join(
-                    self.netG_YtoX_path, "netG_YtoX{}.pth".format(kwargs["epoch"])
-                ),
-            )
+            for filename, model, path in [
+                ("netG_XtoY", self.netGX_toY, self.netG_XtoY_path),
+                ("netG_YtoX", self.netGY_toX, self.netG_YtoX_path),
+            ]:
+                torch.save(
+                    model.state_dict(),
+                    os.path.join(path, "{}{}.pth".format(filename, kwargs["epoch"])),
+                )
 
             if self.loss > kwargs["netG_loss"]:
                 self.loss = kwargs["netG_loss"]
