@@ -1,6 +1,6 @@
 ,Quantity
-train_data(total),18
-test_data(total),7
+train_data(total),20
+test_data(total),5
 total_data,25
-train_data_shape,"torch.Size([3, 256, 256])"
-test_data_shape,"torch.Size([3, 256, 256])"
+train_data_shape,"torch.Size([3, 512, 512])"
+test_data_shape,"torch.Size([3, 512, 512])"

@@ -54,7 +54,7 @@ class Loader:
     def transforms(self):
         return transforms.Compose(
             [
-                transforms.Resize((self.image_size, self.image_size)),
+                transforms.Resize((self.image_size, self.image_size), Image.BICUBIC),
                 transforms.ToTensor(),
                 transforms.CenterCrop((self.image_size, self.image_size)),
                 transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),

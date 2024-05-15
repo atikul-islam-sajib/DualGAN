@@ -25,7 +25,10 @@ class GradientPenalty(nn.Module):
             and isinstance(y, torch.Tensor)
         ):
             alpha = torch.randn(
-                self.batch_size, self.in_channels // self.in_channels, 1, 1
+                X.size(0),
+                self.in_channels,
+                512,
+                512,
             ).to(device)
 
             interpolated = (alpha * X) + ((1 - alpha) * y)
@@ -36,13 +39,16 @@ class GradientPenalty(nn.Module):
             gradients = torch.autograd.grad(
                 outputs=d_interpolated,
                 inputs=interpolated,
-                grad_outputs=torch.ones_like(d_interpolated).to(device),
+                grad_outputs=torch.ones_like(d_interpolated, requires_grad=False).to(
+                    device
+                ),
                 create_graph=True,
                 retain_graph=True,
+                only_inputs=True,
             )[0]
 
             gradients = gradients.view(gradients.size(0), -1)
-            gradients = torch.norm(gradients, 2, dim=1)
+            gradients = gradients.norm(2, dim=1)
 
             return ((gradients - 1) ** 2).mean()
 
@@ -72,8 +78,8 @@ if __name__ == "__main__":
 
     netD = netD.to(device)
 
-    X = torch.randn(1, 3, 256, 256).to(device)
-    y = torch.randn(1, 3, 256, 256).to(device)
+    X = torch.randn(4, 3, 256, 256).to(device)
+    y = torch.randn(4, 3, 256, 256).to(device)
 
     grad_penalty = GradientPenalty(
         in_channels=in_channels, batch_size=batch_size, device=device
