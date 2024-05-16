@@ -127,10 +127,12 @@ The project is controlled via a command line interface (CLI) which allows for ru
 
 ### CLI Command Examples
 
-| Task                     | CUDA Command                                                                                                              | MPS Command                                                                                                              | CPU Command                                                                                                              |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| **Training a Model**     | `python cli.py --train --image_path "/path/to/dataset" --batch_size 1 --image_size 256 --epochs 1000 --lr 0.0002 --adam True --device "cuda"` | `python cli.py --train --image_path "/path/to/dataset" --batch_size 1 --image_size 256 --epochs 1000 --lr 0.0002 --adam True --device "mps"` | `python cli.py --train --image_path "/path/to/dataset" --batch_size 1 --image_size 256 --epochs 1000 --lr 0.0002  --adam True --device "cpu"` |
-| **Testing a Model**      | `python cli.py --test_result --netG_XtoY "/path/to/saved_model.pth" --netG_YtoX "/path/to/saved_model.pth" --best_model True device "cuda"`                                              | `python cli.py --test_result  --netG_XtoY "/path/to/saved_model.pth" --netG_YtoX "/path/to/saved_model.pth" --best_model True --device "mps"`                                              | `python main.py --test_result  --netG_XtoY "/path/to/saved_model.pth" --netG_YtoX "/path/to/saved_model.pth" --best_model True --device "cpu"`                                              |
+| Task                     | CUDA Command                                                                                                              | CPU Command                                                                                                              |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| **Training a Model**     | `python cli.py --train --image_path "/path/to/dataset" --batch_size 1 --image_size 256 --epochs 1000 --lr 0.0002 --adam True --device "cuda"`  <!--(mps)-->| `python cli.py --train --image_path "/path/to/dataset" --batch_size 1 --image_size 256 --epochs 1000 --lr 0.0002 --adam True --device "cpu"` |
+| **Testing a Model**      | `python cli.py --test_result --netG_XtoY "/path/to/saved_model.pth" --netG_YtoX "/path/to/saved_model.pth" --best_model True --device "cuda"` <!--(mps)-->| `python cli.py --test_result --netG_XtoY "/path/to/saved_model.pth" --netG_YtoX "/path/to/saved_model.pth" --best_model True --device "cpu"`                                              |
+
+Note: Use "mps" as a comment inside the CUDA command.
 
 
 ### Notes:
