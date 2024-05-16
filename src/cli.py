@@ -54,9 +54,6 @@ def cli():
         default=5,
         help="Number of critic iterations per generator iteration",
     )
-    parser.add_argument(
-        "--batch_size", type=int, default=16, help="Size of the batches"
-    )
     parser.add_argument("--adam", type=bool, default=True, help="Use Adam optimizer")
     parser.add_argument("--SGD", type=bool, default=False, help="Use SGD optimizer")
     parser.add_argument(
@@ -93,7 +90,7 @@ def cli():
         "--YtoX", type=str, help="Denine the netG_YtoX model".capitalize()
     )
     parser.add_argument(
-        "--create_gif", type=bool, default=True, help="Create a gif".capitalize()
+        "--create_gif", type=bool, default=False, help="Create a gif".capitalize()
     )
     parser.add_argument(
         "--train", action="store_true", help="Train the model".capitalize()
@@ -120,7 +117,7 @@ def cli():
         loader.dataset_details()
 
         trainer = Trainer(
-            in_channels=args.in_channels,
+            in_channels=args.channels,
             epochs=args.epochs,
             lr=args.lr,
             num_critics=args.num_critics,
@@ -138,7 +135,7 @@ def cli():
         with open("./trained_params.yml", "w") as file:
             yaml.safe_dump(
                 {
-                    "in_channels": args.in_channels,
+                    "in_channels": args.channels,
                     "image_size": args.image_size,
                     "channels": args.channels,
                     "split_size": args.split_size,
@@ -157,7 +154,7 @@ def cli():
 
     elif args.test:
         test_model = TestModel(
-            in_channels=args.in_channels,
+            in_channels=args.channels,
             dataloader=args.dataloader,
             device=args.device,
             best_model=args.best_model,

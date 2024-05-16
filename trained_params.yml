@@ -1,0 +1,13 @@
+SGD: false
+adam: true
+batch_size: 8
+channels: 3
+epochs: 150
+image_size: 512
+in_channels: 3
+is_display: true
+is_weight_init: true
+lr: 0.0002
+lr_scheduler: true
+num_critics: 4
+split_size: 0.25

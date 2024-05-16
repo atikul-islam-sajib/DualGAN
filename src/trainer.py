@@ -171,7 +171,7 @@ class Trainer:
         netD_X_loss = (
             -torch.mean(real_x_predict)
             + torch.mean(fake_x_predict)
-            + (10.0 * grad_X_loss)
+            + (5.0 * grad_X_loss)
         )
 
         netD_X_loss.backward()
@@ -191,7 +191,7 @@ class Trainer:
         netD_Y_loss = (
             -torch.mean(real_y_predict)
             + torch.mean(fake_y_predict)
-            + (10.0 * grad_Y_loss)
+            + (5.0 * grad_Y_loss)
         )
 
         netD_Y_loss.backward()
@@ -308,9 +308,9 @@ class Trainer:
             self.total_netD_X_loss.append(np.mean(netD_X_loss))
             self.total_netD_Y_loss.append(np.mean(netD_Y_loss))
 
-        self.history["netG_loss"].extend(self.total_netG_loss)
-        self.history["netD_X_loss"].extend(self.total_netD_X_loss)
-        self.history["netD_Y_loss"].extend(self.total_netD_Y_loss)
+        self.history["netG_loss"].append(self.total_netG_loss)
+        self.history["netD_X_loss"].append(self.total_netD_X_loss)
+        self.history["netD_Y_loss"].append(self.total_netD_Y_loss)
 
         for filename, file in self.history.items():
 
