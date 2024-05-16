@@ -74,7 +74,7 @@ This project is thoughtfully organized to support the development, training, and
 - **unittest/**
   - Unit tests ensuring code reliability, correctness, and functionality across various project components.
 
-### Dataset Organization for CycleGAN
+### Dataset Organization for DualGAN
 
 The dataset is organized into three categories for CycleGAN. Each category directly contains unpaired images and their corresponding  images stored.
 
@@ -101,7 +101,7 @@ For detailed documentation on the implementation and usage, visit the -> [DualGA
 
 ### User Guide Notebook - Custom Modules
 
-For detailed documentation on the implementation and usage, visit the -> [DualGAN Notebook - CM](https://github.com/atikul-islam-sajib/DiscoGAN/blob/main/research/notebooks/ModelTrain_CM.ipynb).
+For detailed documentation on the implementation and usage, visit the -> [DualGAN Notebook - CM](https://github.com/atikul-islam-sajib/DualGAN/blob/main/research/notebooks/ModelTrain_CM.ipynb).
 
 
 ### Command Line Interface
