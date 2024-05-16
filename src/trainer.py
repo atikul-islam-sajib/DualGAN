@@ -327,7 +327,7 @@ class Trainer:
         plt.figure(figsize=(20, 10))
 
         if os.path.exists(metrics_path):
-            history = load(os.path.join(metrics_path, "history.pkl"))
+            history = load(os.path.join(metrics_path, "history.pkl"))[0]
             for index, (filename, loss) in enumerate(history.items()):
                 plt.subplot(1, 3, index + 1)
 
