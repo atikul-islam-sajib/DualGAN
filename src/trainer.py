@@ -328,13 +328,7 @@ class Trainer:
 
         if os.path.exists(metrics_path):
             history = load(os.path.join(metrics_path, "history.pkl"))
-            for index, (filename, loss) in enumerate(
-                [
-                    ("netG_loss", history["netG_loss"]),
-                    ("netD_X_loss", history["netD_X_loss"]),
-                    ("netD_Y_loss", history["netD_Y_loss"]),
-                ]
-            ):
+            for index, (filename, loss) in enumerate(history.items()):
                 plt.subplot(1, 3, index + 1)
 
                 plt.plot(loss)
